@@ -24,15 +24,20 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Install dependencies
         run: npm install --no-audit --no-fund
-        env:
-          NODE_ENV: development
 
-      - name: Verify vite is installed
-        run: npx vite --version
+      - name: Check vite installed correctly
+        run: |
+          if [ -f node_modules/.bin/vite ]; then
+            echo "vite found in node_modules"
+          else
+            echo "vite MISSING from node_modules - retrying install"
+            rm -rf node_modules
+            npm install --no-audit --no-fund
+          fi
 
       - name: Build
         run: npm run build
