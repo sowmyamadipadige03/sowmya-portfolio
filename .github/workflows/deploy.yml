@@ -24,20 +24,13 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 22
+
+      - name: Upgrade npm
+        run: npm install -g npm@latest
 
       - name: Install dependencies
         run: npm install --no-audit --no-fund
-
-      - name: Check vite installed correctly
-        run: |
-          if [ -f node_modules/.bin/vite ]; then
-            echo "vite found in node_modules"
-          else
-            echo "vite MISSING from node_modules - retrying install"
-            rm -rf node_modules
-            npm install --no-audit --no-fund
-          fi
 
       - name: Build
         run: npm run build
